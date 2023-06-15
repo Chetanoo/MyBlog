@@ -1,0 +1,43 @@
+type Query {
+  hello: String!
+  posts: [Post!]!
+  post(id: String!): Post
+  me: User
+}
+
+type Post {
+  id: String!
+  createdAt: String!
+  updatedAt: String!
+  title: String!
+}
+
+type User {
+  id: String!
+  createdAt: String!
+  updatedAt: String!
+  username: String!
+}
+
+type Mutation {
+  createPost(title: String!): Post!
+  updatePost(title: String!, id: String!): Post!
+  deletePost(id: String!): Post!
+  register(options: UsernamePasswordInput!): UserResponse!
+  login(options: UsernamePasswordInput!): UserResponse!
+}
+
+type UserResponse {
+  errors: [FieldError!]
+  user: User
+}
+
+type FieldError {
+  field: String!
+  message: String!
+}
+
+input UsernamePasswordInput {
+  username: String!
+  password: String!
+}

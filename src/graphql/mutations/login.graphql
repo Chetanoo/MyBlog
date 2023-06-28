@@ -1,0 +1,12 @@
+# Write your query or mutation here
+mutation Login($options:UsernamePasswordInput!){
+    login(options: $options) {
+        user {
+            ...CommonUser
+        }
+        errors {
+            field
+            message
+        }
+    }
+}

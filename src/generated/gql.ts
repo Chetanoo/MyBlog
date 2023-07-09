@@ -13,10 +13,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "fragment CommonUser on User {\n  id\n  username\n  createdAt\n  updatedAt\n}": types.CommonUserFragmentDoc,
-    "mutation Login($options: UsernamePasswordInput!) {\n  login(options: $options) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      field\n      message\n    }\n  }\n}": types.LoginDocument,
+    "fragment CommonError on FieldError {\n  field\n  message\n}": types.CommonErrorFragmentDoc,
+    "fragment CommonUser on User {\n  id\n  username\n  email\n  createdAt\n  updatedAt\n}": types.CommonUserFragmentDoc,
+    "fragment CommonUserResponse on UserResponse {\n  user {\n    ...CommonUser\n  }\n  errors {\n    ...CommonError\n  }\n}": types.CommonUserResponseFragmentDoc,
+    "mutation ChangePassword($token: String!, $newPassword: String!) {\n  changePassword(token: $token, newPassword: $newPassword) {\n    user {\n      id\n      username\n      email\n      createdAt\n      updatedAt\n    }\n    errors {\n      field\n      message\n    }\n  }\n}": types.ChangePasswordDocument,
+    "mutation ForgotPassword($email: String!) {\n  forgotPassword(email: $email)\n}": types.ForgotPasswordDocument,
+    "mutation Login($usernameOrEmail: String!, $password: String!) {\n  login(usernameOrEmail: $usernameOrEmail, password: $password) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      ...CommonError\n    }\n  }\n}": types.LoginDocument,
     "mutation Logout {\n  logout\n}": types.LogoutDocument,
-    "mutation Register($username: String!, $password: String!) {\n  register(options: {username: $username, password: $password}) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      field\n      message\n    }\n  }\n}": types.RegisterDocument,
+    "mutation Register($options: UsernamePasswordInput!) {\n  register(options: $options) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      ...CommonError\n    }\n  }\n}": types.RegisterDocument,
     "query Me {\n  me {\n    ...CommonUser\n  }\n}": types.MeDocument,
     "query Posts {\n  posts {\n    id\n    createdAt\n    title\n    updatedAt\n  }\n}": types.PostsDocument,
 };
@@ -38,11 +42,27 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "fragment CommonUser on User {\n  id\n  username\n  createdAt\n  updatedAt\n}"): (typeof documents)["fragment CommonUser on User {\n  id\n  username\n  createdAt\n  updatedAt\n}"];
+export function graphql(source: "fragment CommonError on FieldError {\n  field\n  message\n}"): (typeof documents)["fragment CommonError on FieldError {\n  field\n  message\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation Login($options: UsernamePasswordInput!) {\n  login(options: $options) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"): (typeof documents)["mutation Login($options: UsernamePasswordInput!) {\n  login(options: $options) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"];
+export function graphql(source: "fragment CommonUser on User {\n  id\n  username\n  email\n  createdAt\n  updatedAt\n}"): (typeof documents)["fragment CommonUser on User {\n  id\n  username\n  email\n  createdAt\n  updatedAt\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "fragment CommonUserResponse on UserResponse {\n  user {\n    ...CommonUser\n  }\n  errors {\n    ...CommonError\n  }\n}"): (typeof documents)["fragment CommonUserResponse on UserResponse {\n  user {\n    ...CommonUser\n  }\n  errors {\n    ...CommonError\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation ChangePassword($token: String!, $newPassword: String!) {\n  changePassword(token: $token, newPassword: $newPassword) {\n    user {\n      id\n      username\n      email\n      createdAt\n      updatedAt\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"): (typeof documents)["mutation ChangePassword($token: String!, $newPassword: String!) {\n  changePassword(token: $token, newPassword: $newPassword) {\n    user {\n      id\n      username\n      email\n      createdAt\n      updatedAt\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation ForgotPassword($email: String!) {\n  forgotPassword(email: $email)\n}"): (typeof documents)["mutation ForgotPassword($email: String!) {\n  forgotPassword(email: $email)\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation Login($usernameOrEmail: String!, $password: String!) {\n  login(usernameOrEmail: $usernameOrEmail, password: $password) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      ...CommonError\n    }\n  }\n}"): (typeof documents)["mutation Login($usernameOrEmail: String!, $password: String!) {\n  login(usernameOrEmail: $usernameOrEmail, password: $password) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      ...CommonError\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -50,7 +70,7 @@ export function graphql(source: "mutation Logout {\n  logout\n}"): (typeof docum
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation Register($username: String!, $password: String!) {\n  register(options: {username: $username, password: $password}) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"): (typeof documents)["mutation Register($username: String!, $password: String!) {\n  register(options: {username: $username, password: $password}) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"];
+export function graphql(source: "mutation Register($options: UsernamePasswordInput!) {\n  register(options: $options) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      ...CommonError\n    }\n  }\n}"): (typeof documents)["mutation Register($options: UsernamePasswordInput!) {\n  register(options: $options) {\n    user {\n      ...CommonUser\n    }\n    errors {\n      ...CommonError\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

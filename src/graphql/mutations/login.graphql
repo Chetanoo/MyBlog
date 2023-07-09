@@ -1,12 +1,11 @@
 # Write your query or mutation here
-mutation Login($options:UsernamePasswordInput!){
-    login(options: $options) {
+mutation Login($usernameOrEmail: String!, $password: String!) {
+    login(usernameOrEmail: $usernameOrEmail, password: $password) {
         user {
             ...CommonUser
         }
         errors {
-            field
-            message
+            ...CommonError
         }
     }
 }

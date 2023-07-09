@@ -17,14 +17,17 @@ type User {
   createdAt: String!
   updatedAt: String!
   username: String!
+  email: String!
 }
 
 type Mutation {
   createPost(title: String!): Post!
   updatePost(title: String!, id: String!): Post!
   deletePost(id: String!): Post!
+  changePassword(newPassword: String!, token: String!): UserResponse!
+  forgotPassword(email: String!): Boolean!
   register(options: UsernamePasswordInput!): UserResponse!
-  login(options: UsernamePasswordInput!): UserResponse!
+  login(password: String!, usernameOrEmail: String!): UserResponse!
   logout: Boolean!
 }
 
@@ -41,4 +44,5 @@ type FieldError {
 input UsernamePasswordInput {
   username: String!
   password: String!
+  email: String!
 }

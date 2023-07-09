@@ -2,33 +2,33 @@ import React from "react";
 import { Box, Button, Flex, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useMutation, useQuery } from "urql";
-import { LogoutDocument, MeDocument } from "../generated/graphql";
+import { LogoutDocument, MeDocument, User } from "../generated/graphql";
+import { isServer } from "../utils/isServer";
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
   const [{ fetching: logoutFetching }, logout] = useMutation(LogoutDocument);
-  const [{ data, fetching }] = useQuery<{ me: { username: string } }>({
+  const [{ data, fetching }] = useQuery<{ me: User }>({
     query: MeDocument,
+    pause: isServer(),
   });
-  let body = null;
 
-  if (fetching) {
-  } else if (!data?.me) {
+  let body;
+
+  if (!data?.me) {
     body = (
       <>
-        <NextLink href="/login">
-          <Link color="white" mr={2} href="/">
-            login
-          </Link>
-        </NextLink>
-        <NextLink href="/register">
-          <Link color="white" mr={2} href="/">
-            register
-          </Link>
-        </NextLink>
+        <Link as={NextLink} color="white" mr={2} href="/login">
+          login
+        </Link>
+        <Link as={NextLink} color="white" mr={2} href="/register">
+          register
+        </Link>
       </>
     );
+  } else if (fetching) {
+    body = <div>loading...</div>;
   } else {
     body = (
       <Flex>

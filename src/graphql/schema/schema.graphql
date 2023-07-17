@@ -10,6 +10,9 @@ type Post {
   createdAt: String!
   updatedAt: String!
   title: String!
+  text: String!
+  rating: Float!
+  creatorId: String!
 }
 
 type User {
@@ -21,14 +24,19 @@ type User {
 }
 
 type Mutation {
-  createPost(title: String!): Post!
+  createPost(input: PostInput!): Post!
   updatePost(title: String!, id: String!): Post!
-  deletePost(id: String!): Post!
+  deletePost(id: String!): Boolean!
   changePassword(newPassword: String!, token: String!): UserResponse!
   forgotPassword(email: String!): Boolean!
   register(options: UsernamePasswordInput!): UserResponse!
   login(password: String!, usernameOrEmail: String!): UserResponse!
   logout: Boolean!
+}
+
+input PostInput {
+  title: String!
+  text: String!
 }
 
 type UserResponse {

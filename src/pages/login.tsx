@@ -4,7 +4,7 @@ import { Box, Button, Flex, Link } from "@chakra-ui/react";
 import { Wrapper } from "../components/Wrapper";
 import { InputField } from "../components/InputField";
 import { useMutation } from "urql";
-import { LoginDocument } from "../generated/graphql";
+import { FieldError, LoginDocument } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 import { withUrqlClient } from "next-urql";
@@ -20,10 +20,13 @@ const Login: React.FC<{}> = () => {
         onSubmit={async (values, { setErrors }) => {
           const response = await login(values);
           if (response.data?.login.errors) {
-            // @ts-ignore
-            setErrors(toErrorMap(response.data.login.errors));
+            setErrors(toErrorMap(response.data.login.errors as FieldError[]));
           } else if (response.data?.login.user) {
-            await router.push("/");
+            if (typeof router.query.next === "string") {
+              await router.push(router.query.next);
+            } else {
+              await router.push("/");
+            }
           }
         }}
         initialValues={{ usernameOrEmail: "", password: "" }}

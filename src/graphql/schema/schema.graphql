@@ -1,8 +1,13 @@
 type Query {
   hello: String!
-  posts: [Post!]!
-  post(id: String!): Post
+  posts(cursor: String, limit: Int!): PaginatedPosts!
+  post(id: Float!): Post
   me: User
+}
+
+type PaginatedPosts {
+  posts: [Post!]!
+  hasMore: Boolean!
 }
 
 type Post {
@@ -12,7 +17,8 @@ type Post {
   title: String!
   text: String!
   rating: Float!
-  creatorId: String!
+  creatorId: Float!
+  textSnippet: String!
 }
 
 type User {
@@ -25,8 +31,8 @@ type User {
 
 type Mutation {
   createPost(input: PostInput!): Post!
-  updatePost(title: String!, id: String!): Post!
-  deletePost(id: String!): Boolean!
+  updatePost(title: String!, id: Float!): Post!
+  deletePost(id: Float!): Boolean!
   changePassword(newPassword: String!, token: String!): UserResponse!
   forgotPassword(email: String!): Boolean!
   register(options: UsernamePasswordInput!): UserResponse!

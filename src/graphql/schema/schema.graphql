@@ -11,18 +11,20 @@ type PaginatedPosts {
 }
 
 type Post {
-  id: String!
+  id: Int!
   createdAt: String!
   updatedAt: String!
   title: String!
   text: String!
-  rating: Float!
-  creatorId: Float!
+  rating: Int!
+  voteStatus: Int
+  creatorId: Int!
+  creator: User!
   textSnippet: String!
 }
 
 type User {
-  id: String!
+  id: Int!
   createdAt: String!
   updatedAt: String!
   username: String!
@@ -30,6 +32,7 @@ type User {
 }
 
 type Mutation {
+  vote(value: Int!, postId: Int!): Boolean!
   createPost(input: PostInput!): Post!
   updatePost(title: String!, id: Float!): Post!
   deletePost(id: Float!): Boolean!

@@ -1,22 +1,30 @@
 type Query {
   hello: String!
-  posts: [Post!]!
-  post(id: String!): Post
+  posts(cursor: String, limit: Int!): PaginatedPosts!
+  post(id: Float!): Post
   me: User
 }
 
+type PaginatedPosts {
+  posts: [Post!]!
+  hasMore: Boolean!
+}
+
 type Post {
-  id: String!
+  id: Int!
   createdAt: String!
   updatedAt: String!
   title: String!
   text: String!
-  rating: Float!
-  creatorId: String!
+  rating: Int!
+  voteStatus: Int
+  creatorId: Int!
+  creator: User!
+  textSnippet: String!
 }
 
 type User {
-  id: String!
+  id: Int!
   createdAt: String!
   updatedAt: String!
   username: String!
@@ -24,9 +32,10 @@ type User {
 }
 
 type Mutation {
+  vote(value: Int!, postId: Int!): Boolean!
   createPost(input: PostInput!): Post!
-  updatePost(title: String!, id: String!): Post!
-  deletePost(id: String!): Boolean!
+  updatePost(title: String!, id: Float!): Post!
+  deletePost(id: Float!): Boolean!
   changePassword(newPassword: String!, token: String!): UserResponse!
   forgotPassword(email: String!): Boolean!
   register(options: UsernamePasswordInput!): UserResponse!

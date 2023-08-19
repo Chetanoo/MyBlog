@@ -18,6 +18,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
       w="100%"
       mt={8}
       mx="auto"
+      pb={10}
     >
       {children}
     </Box>
